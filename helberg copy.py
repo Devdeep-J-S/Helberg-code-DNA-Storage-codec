@@ -26,18 +26,17 @@ def String_generate(n, q, x, final_list):
     return x
 
 
-def Vi_generate(n, s, v, q):
+def Vi_generate(n, s, v):
     for i in range(0, n):
         for j in range(1, s+1):
             v[i] += v[i-j] if (i-j >= 0) else 0
-        v[i] = v[i]*(q-1) + 1
 
 
-def find_M(v, s, n, q):
-    m = 0
+def find_M(v, s, n):
+    m = 1
     for i in range(1, s+1):
         m += v[n-i]
-    return m*(q-1) + 1
+    return m
 
 
 def func(num, v, m, n, ans):
@@ -74,10 +73,10 @@ if __name__ == "__main__":
         # for i in x:
         #     print(i)
 
-        Vi_generate(n, s, v, q)
+        Vi_generate(n, s, v)
         # print("V = ", v)
 
-        m = find_M(v, s, n, q)
+        m = find_M(v, s, n)
         # print("m = ", m)
 
         for i in x:
@@ -120,7 +119,7 @@ if __name__ == "__main__":
                     print(len(x.intersection(y)))
                     flag = False
                     break
-            if (flag and len(ans[i]) > 1):
+            if (flag):
                 print("a = ", i, file=f)
                 codewords.pprint(ans[i])
 

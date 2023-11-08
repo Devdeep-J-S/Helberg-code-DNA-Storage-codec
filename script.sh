@@ -5,9 +5,9 @@
 rm output.txt
 touch output.txt
 
-for i in {4..10}; do
-    for j in {2..2}; do
-        for k in {2..5}; do
+for i in {4..4}; do
+    for j in {2..5}; do
+        for k in {1..1}; do
             py helberg.py $i $j $k
         done
     done

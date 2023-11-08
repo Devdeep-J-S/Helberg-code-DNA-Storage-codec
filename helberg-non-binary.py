@@ -26,14 +26,14 @@ def String_generate(n, q, x, final_list):
     return x
 
 
-def Vi_generate(n, s, v, q):
+def Vi_generate(n, s, v):
     for i in range(0, n):
         for j in range(1, s+1):
             v[i] += v[i-j] if (i-j >= 0) else 0
         v[i] = v[i]*(q-1) + 1
 
 
-def find_M(v, s, n, q):
+def find_M(v, s, n):
     m = 0
     for i in range(1, s+1):
         m += v[n-i]
@@ -52,6 +52,40 @@ def func(num, v, m, n, ans):
     ans[sum].append(num)
 
 
+def del_sphere(final_list, num):
+    temp_list = []
+    del_list = {}
+    for i in final_list:
+        for j in range(len(i)):
+            pref = i[:j]
+            suff = i[j+1:]
+            temp = tuple(pref) + tuple(suff)
+            if (num > 0) and (temp not in temp_list):
+                temp_list.append(temp)
+            else:
+                if temp not in del_list:
+                    del_list[temp] = []
+                if i not in del_list[temp]:
+                    del_list[temp].append(i)
+    main_list = {}
+    if (num == 0):
+        return del_list
+    else:
+        num -= 1
+        x = del_sphere(temp_list, num)
+        new_dict = {}
+        for i in x:
+            for j in x[i]:
+                tuple1 = tuple(i for i in del_list[j])
+                for k in tuple1:
+                    if i not in new_dict:
+                        new_dict[i] = []
+                    if k not in new_dict[i]:
+                        new_dict[i].append(k)
+        # print(new_dict)
+        return new_dict
+
+
 if __name__ == "__main__":
     x = []
     final_list = []
@@ -63,7 +97,7 @@ if __name__ == "__main__":
     n = int(sys.argv[1])
     q = int(sys.argv[2])
     s = int(sys.argv[3])
-    v = np.ones(n)
+    v = np.zeros(n)
     ans = {}
 
     if s < n:
@@ -74,10 +108,10 @@ if __name__ == "__main__":
         # for i in x:
         #     print(i)
 
-        Vi_generate(n, s, v, q)
+        Vi_generate(n, s, v)
         # print("V = ", v)
 
-        m = find_M(v, s, n, q)
+        m = find_M(v, s, n)
         # print("m = ", m)
 
         for i in x:
@@ -93,20 +127,12 @@ if __name__ == "__main__":
         # Use the pretty printer to print the dictionary
         codewords.pprint(ans)
 
-        del_list = {}
-        for i in final_list:
-            for j in range(len(i)):
-                pref = i[:j]
-                suff = i[j+1:]
-                temp = str(pref+suff)
-                # print(temp)
-                if temp not in del_list:
-                    del_list[temp] = []
-                if i not in del_list[temp]:
-                    del_list[temp].append(i)
-        # Use the pretty printer to print the dictionary
+        del_list = del_sphere(final_list, s-1)
+        # print(del_list)
+
         codewords.pprint(del_list)
 
+        # find codeword with non intersecting sphere
         for i in ans:
             flag = True
             list_tuple = [tuple(lst) for lst in ans[i]]
