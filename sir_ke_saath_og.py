@@ -124,6 +124,7 @@ if __name__ == "__main__":
         # codewords.pprint(del_list)
 
         sphered = {}
+        q_ary_residue = []
         for i in ans:
             flag = True
             list_tuple = [tuple(lst) for lst in ans[i]]
@@ -139,6 +140,7 @@ if __name__ == "__main__":
                     break
             if (flag and len(ans[i]) > 1):
                 print("a = ", i, file=f)
+                q_ary_residue.append(i)
                 for k in ans[i]:
                     code = []
                     for j in k:
@@ -150,10 +152,10 @@ if __name__ == "__main__":
                             code.append(1)
                         elif (j == 2):
                             code.append(1)
-                            code.append(0)
+                            code.append(1)
                         else:
                             code.append(1)
-                            code.append(1)
+                            code.append(0)
                     if i not in sphered:
                         sphered[i] = []
                     sphered[i].append(code)
@@ -166,11 +168,13 @@ if __name__ == "__main__":
         print(
             "============================================================================", file=f)
 
-        for i in sphered:
-            if (len(sphered[i]) > 1):
-                print("a = ", i, file=f)
-                print(sphered[i], file=f)
-                del_list = del_sphere(sphered[i], s)
+        binary_residue = []
+        for j in sphered:
+            if (len(sphered[j]) > 1):
+                print("a = ", j, file=f)
+                print(sphered[j], file=f)
+                del_list = del_sphere(sphered[j], s)
+                binary_residue.append(j)
                 # # Use the pretty printer to print the dictionary
                 reverse_del_list = {}
                 for i in del_list:
@@ -199,3 +203,6 @@ if __name__ == "__main__":
                     for i in del_list:
                         code.append(i)
                     print("--------------No intersection------------\n", code, file=f)
+
+        print(sorted(q_ary_residue), file=f)
+        print(sorted(binary_residue), file=f)

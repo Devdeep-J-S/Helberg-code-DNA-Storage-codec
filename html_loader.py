@@ -5,16 +5,15 @@ import os
 with open('output.txt', 'r') as f:
     data = f.readlines()
 
-# print(data)
-
 # Start the HTML output
-html_output = '<pre>\n'
+html_output = '<table style="width:100%">\n'
 
 # Add the data
-html_output += ''.join(data)
+for line in data:
+    html_output += '<tr><td>{}</td></tr>\n'.format(line.strip())
 
 # End the HTML output
-html_output += '</pre>'
+html_output += '</table>\n'
 
 # Write the HTML output to a file
 with open('output.html', 'w') as f:

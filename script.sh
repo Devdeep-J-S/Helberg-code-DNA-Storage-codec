@@ -5,10 +5,10 @@
 rm output.txt
 touch output.txt
 
-for i in {4..4}; do
-    for j in {2..5}; do
-        for k in {1..1}; do
-            py helberg.py $i $j $k
+for i in {3..7}; do
+    for j in {5..5}; do
+        for k in {2..2}; do
+            py 'helberg copy 2.py' $i $j $k
         done
     done
 done

@@ -30,14 +30,14 @@ def Vi_generate(n, s, v, q):
     for i in range(0, n):
         for j in range(1, s+1):
             v[i] += v[i-j] if (i-j >= 0) else 0
-        v[i] = v[i]*(q-1) + 1
+        v[i] = v[i]*(n/2 + 1) + 1
 
 
 def find_M(v, s, n, q):
     m = 0
     for i in range(1, s+1):
         m += v[n-i]
-    return m*(q-1) + 1
+    return m*(n/2+1) + 1
 
 
 def func(num, v, m, n, ans):
@@ -74,9 +74,6 @@ def del_sphere(final_list, num):
         num -= 1
         x = del_sphere(temp_list, num)
         new_dict = {}
-        # print(x)
-        # print("+++++++++++++++++++++++++++++++++++++++++++++++++")
-        # print(del_list)
         for i in x:
             for j in x[i]:
                 if (j in del_list):
@@ -134,26 +131,30 @@ if __name__ == "__main__":
                 # print(x, y)
                 # print(type(x), type(y), type(ans[i]), type(del_list[j]))
                 if len(x.intersection(y)) > 1:
-                    # print(len(x.intersection(y)))
+                    print(len(x.intersection(y)))
                     flag = False
                     break
             if (flag and len(ans[i]) > 1):
                 print("a = ", i, file=f)
                 for k in ans[i]:
                     code = []
-                    for j in range(0, len(k), 2):
-                        if (k[j] == 0 and k[j+1] == 1):
-                            code.append(1)
-                        if (k[j] == 0 and k[j+1] == 0):
+                    for j in k:
+                        if (j == 0):
                             code.append(0)
-                        if (k[j] == 1 and k[j+1] == 0):
-                            code.append(2)
-                        if (k[j] == 1 and k[j+1] == 1):
-                            code.append(3)
+                            code.append(0)
+                        elif (j == 1):
+                            code.append(0)
+                            code.append(1)
+                        elif (j == 2):
+                            code.append(1)
+                            code.append(1)
+                        else:
+                            code.append(1)
+                            code.append(0)
                     if i not in sphered:
                         sphered[i] = []
                     sphered[i].append(code)
-                    print("original=", k, "reverse gray mapped=", code, file=f)
+                    print("original=", k, "gray mapped=", code, file=f)
 
         # codewords.pprint(sphered)
         # # print n , q , s and max_codeword
@@ -166,7 +167,7 @@ if __name__ == "__main__":
             if (len(sphered[i]) > 1):
                 print("a = ", i, file=f)
                 print(sphered[i], file=f)
-                del_list = del_sphere(sphered[i], s-2)
+                del_list = del_sphere(sphered[i], s)
                 # # Use the pretty printer to print the dictionary
                 reverse_del_list = {}
                 for i in del_list:
@@ -194,5 +195,4 @@ if __name__ == "__main__":
                     code = []
                     for i in del_list:
                         code.append(i)
-                    print(
-                        "-------------------No intersection-----------------", code, file=f)
+                    print("--------------No intersection------------\n", code, file=f)
