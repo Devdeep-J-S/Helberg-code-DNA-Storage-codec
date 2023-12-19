@@ -122,9 +122,9 @@ if __name__ == "__main__":
                     for j in range(0, len(k), 2):
                         if (k[j] == 0 and k[j+1] == 1):
                             code.append(1)
-                        if (k[j] == 1 and k[j+1] == 1):
-                            code.append(3)
                         if (k[j] == 0 and k[j+1] == 0):
+                            code.append(3)
+                        if (k[j] == 1 and k[j+1] == 1):
                             code.append(0)
                         if (k[j] == 1 and k[j+1] == 0):
                             code.append(2)
@@ -158,18 +158,18 @@ if __name__ == "__main__":
                 print(delList, file=f)
 
                 reverseDelList = {}
-                for i in delList:
-                    for j in delList[i]:
+                for k in delList:
+                    for j in delList[k]:
                         if tuple(j) not in reverseDelList:
                             reverseDelList[tuple(j)] = []
-                        reverseDelList[tuple(j)].append(i)
+                        reverseDelList[tuple(j)].append(k)
                 delList = reverseDelList
                 print("deletion sphere", file=f)
                 codewords.pprint(delList)
 
                 flag = True
-                for i in delList:
-                    listTuple = [tuple(lst) for lst in delList[i]]
+                for ib in delList:
+                    listTuple = [tuple(lst) for lst in delList[ib]]
                     x = set(listTuple)
                     for j in delList:
                         listTuple = [tuple(lst) for lst in delList[j]]
@@ -183,9 +183,10 @@ if __name__ == "__main__":
                         break
                 if flag:
                     code = []
-                    for i in delList:
-                        code.append(i)
+                    for ic in delList:
+                        code.append(ic)
                     print(
                         "-------------------No intersection----------------- {}".format(code), file=f)
                 else:
                     print("intersecting codewords " + str(i))
+                    print(i, len(sphered[i]), "intersecting")
