@@ -85,40 +85,11 @@ if __name__ == "__main__":
         # Create a pretty printer object
         codewords = pp.PrettyPrinter(indent=4, stream=f)
 
-        # Use the pretty printer to print the dictionary
-        # codewords.pprint(ans)
-
-        # del_list = {}
-        # for i in final_list:
-        #     for j in range(len(i)):
-        #         pref = i[:j]
-        #         suff = i[j+1:]
-        #         temp = str(pref+suff)
-        #         # print(temp)
-        #         if temp not in del_list:
-        #             del_list[temp] = []
-        #         if i not in del_list[temp]:
-        #             del_list[temp].append(i)
-        # # Use the pretty printer to print the dictionary
-        # codewords.pprint(del_list)
-
-        # for i in ans:
-        #     flag = True
-        #     list_tuple = [tuple(lst) for lst in ans[i]]
-        #     x = set(list_tuple)
-        #     for j in del_list:
-        #         list_tuple = [tuple(lst) for lst in del_list[j]]
-        #         y = set(list_tuple)
-        #         # print(x, y)
-        #         # print(type(x), type(y), type(ans[i]), type(del_list[j]))
-        #         if len(x.intersection(y)) > 1:
-        #             print(len(x.intersection(y)))
-        #             flag = False
-        #             break
-        #     if (flag and len(ans[i]) > 1):
-        #         print("a = ", i, file=f)
-        #         codewords.pprint(ans[i])
-
+        print(v, m)
+        for i in ans:
+            if len(ans[i]) > 1:
+                print("a = ", i, file=f)
+                codewords.pprint(ans[i])
         # print n , q , s and max_codeword
         print("N = ", n, ", q = ", q, ", s = ", s, ", Codeword total = ", len(final_list),
               ", Max number of codewords = ", max(len(v) for v in ans.values()), file=f)

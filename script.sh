@@ -6,9 +6,9 @@ rm output.txt
 touch output.txt
 
 for i in {3..7}; do
-    for j in {5..5}; do
-        for k in {2..2}; do
-            py 'helberg copy 2.py' $i $j $k
+    for j in 4; do
+        for k in 2; do
+            python 'data_maker_god_map.py' $i $j $k
         done
     done
 done

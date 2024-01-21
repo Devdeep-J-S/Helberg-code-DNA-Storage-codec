@@ -99,95 +99,94 @@ if __name__ == "__main__":
         ans[0] = []
         exit("s should be less than n")
 
-    with open('output.txt', 'a') as f:
+    qry = {}
+    with open('data_gen.txt', 'a') as f:
+        print("For q = ", numAlphabets, "n = ", length,
+              "Weights and m :", vArray, m, file=f)
         codewords = pp.PrettyPrinter(indent=4, stream=f)
-
-        delList = calculateDeletionSphere(finalList, s-1)
-
-        sphered = {}
         for i in ans:
-            flag = True
-            listTuple = [tuple(lst) for lst in ans[i]]
-            x = set(listTuple)
-            for j in delList:
-                listTuple = [tuple(lst) for lst in delList[j]]
-                y = set(listTuple)
-                if len(x.intersection(y)) > 1:
-                    flag = False
-                    break
-            if (flag and len(ans[i]) > 1):
-                print("a = ", i, file=f)
+            if (len(ans[i]) > 1):
+                # print("a = ", i, file=f)
+                for k in ans[i]:
+                    code = []
+                    for j in k:
+                        if (j == 0):
+                            code.append(1)
+                            code.append(1)
+                        elif (j == 1):
+                            code.append(0)
+                            code.append(1)
+                        elif (j == 2):
+                            code.append(1)
+                            code.append(0)
+                        else:
+                            code.append(0)
+                            code.append(0)
+                    if (i, tuple(k)) not in qry:
+                        qry[(i, tuple(k))] = tuple(code)
+
+        sorted(qry)
+        # print(codewords.pprint(qry), file=f)
+        print("For Queterenary: ", file=f)
+        print("N = {}, q = {}, s = {}, Codeword total = {}, Max number of codewords = {}".format(
+            length, numAlphabets, s, len(finalList), max(len(v) for v in ans.values())), file=f)
+        print("============================================================================", file=f)
+
+        list = []
+        maxi = 0
+        for i in ans:
+            maxi = max(maxi, len(ans[i]))
+
+        for i in ans:
+            if (len(ans[i]) >= maxi):
+                list.append((i))
+        list.sort()
+        print(list)
+        ans = {}
+        binary = {}
+        string = []
+        finalList = []
+        vArray = np.zeros(2*length)
+        if s < length:
+            generateStrings(2*length, numAlphabets-2, string, finalList)
+            string = finalList
+            string = np.array(string)
+            generateVArray(2*length, s+1, vArray, numAlphabets-2)
+            m = calculateM(vArray, s+1, 2*length, numAlphabets-2)
+            for i in string:
+                calculateMoment(i, vArray, m, 2*length, ans)
+
+        print("For q = ", numAlphabets-2, "n = ", 2*length,
+              "Weights and m :", vArray, m, file=f)
+        for i in ans:
+            if (len(ans[i]) > 1):
                 for k in ans[i]:
                     code = []
                     for j in range(0, len(k), 2):
                         if (k[j] == 0 and k[j+1] == 1):
                             code.append(1)
-                        if (k[j] == 1 and k[j+1] == 0):
-                            code.append(3)
                         if (k[j] == 0 and k[j+1] == 0):
-                            code.append(0)
+                            code.append(3)
                         if (k[j] == 1 and k[j+1] == 1):
+                            code.append(0)
+                        if (k[j] == 1 and k[j+1] == 0):
                             code.append(2)
-                    if i not in sphered:
-                        sphered[i] = []
-                    sphered[i].append(code)
-                    print("original= {} <br> reverse gray mapped= {}".format(
-                        k, code), file=f)
+                    if (i, tuple(k)) not in qry:
+                        binary[(i, tuple(k))] = tuple(code)
 
+        sorted(binary)
+        # print(codewords.pprint(binary), file=f)
+
+        print("For Binary: ", file=f)
         print("N = {}, q = {}, s = {}, Codeword total = {}, Max number of codewords = {}".format(
-            length, numAlphabets, s, len(finalList), max(len(v) for v in ans.values())), file=f)
+            2*length, numAlphabets-2, s+1, len(finalList), max(len(v) for v in ans.values())), file=f)
         print("============================================================================", file=f)
 
-        print("{} {}".format(m, vArray), file=f)
-        list = []
-        maxi = 0
-        for i in sphered:
-            maxi = max(maxi, len(sphered[i]))
-
-        for i in sphered:
-            if (len(sphered[i]) >= maxi):
-                list.append((i, len(sphered[i])))
-        list.sort(key=lambda x: x[1], reverse=True)
-        print(list)
-        print(list, file=f)
-        for i in sphered:
-            if (len(sphered[i]) > 1):
-                print("a = ", i, file=f)
-                print(sphered[i], file=f)
-                delList = calculateDeletionSphere(sphered[i], s-2)
-                print(delList, file=f)
-
-                reverseDelList = {}
-                for k in delList:
-                    for j in delList[k]:
-                        if tuple(j) not in reverseDelList:
-                            reverseDelList[tuple(j)] = []
-                        reverseDelList[tuple(j)].append(k)
-                delList = reverseDelList
-                print("deletion sphere", file=f)
-                codewords.pprint(delList)
-
-                flag = True
-                for ib in delList:
-                    listTuple = [tuple(lst) for lst in delList[ib]]
-                    x = set(listTuple)
-                    for j in delList:
-                        listTuple = [tuple(lst) for lst in delList[j]]
-                        y = set(listTuple)
-                        if len(x.intersection(y)) == 0 or x == y:
-                            flag = True
-                        else:
-                            flag = False
-                            break
-                    if not flag:
-                        break
-                if flag:
-                    code = []
-                    for ic in delList:
-                        code.append(ic)
+        # Connect the dictionaries
+        for key1, value1 in qry.items():
+            for key2, value2 in binary.items():
+                # print(value1, value2, key1, key2)
+                if value1 == key2[1] and key1[0] in list:
                     print(
-                        "-------------------No intersection----------------- {}".format(code), file=f)
-                else:
-                    if (len(sphered[i]) == maxi):
-                        print("maximal", end=" ")
-                    print(i, len(sphered[i]), "intersecting")
+                        f"a = {key1[0]} , a' = {key2[0]}, {key1[1]} = {value1} qary --> binary {key2[1]} in {value2}", file=f)
+        print("============================================================================\n\n\n\n\n", file=f)

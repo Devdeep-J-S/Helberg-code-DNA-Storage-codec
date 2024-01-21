@@ -99,6 +99,7 @@ if __name__ == "__main__":
         ans[0] = []
         exit("s should be less than n")
 
+    print(vArray, m)
     with open('output.txt', 'a') as f:
         codewords = pp.PrettyPrinter(indent=4, stream=f)
 
